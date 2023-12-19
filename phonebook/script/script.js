@@ -154,6 +154,7 @@ const data = [
   // prettier-ignore
   const createRow = ({name: firstName, surname, phone}) => {
     const tr = document.createElement('tr');
+    tr.classList.add('contact');
 
     const tdDel = document.createElement('td');
     tdDel.classList.add('delete');
@@ -163,9 +164,11 @@ const data = [
 
     const tdName = document.createElement('td');
     tdName.textContent = firstName;
+    tdName.classList.add('contact-name');
 
     const tdSurname = document.createElement('td');
     tdSurname.textContent = surname;
+    tdSurname.classList.add('contact-surname');
 
     const tdPhone = document.createElement('td');
     const phoneLink = document.createElement('a');
@@ -256,6 +259,7 @@ const data = [
       list: table.tbody,
       logo,
       btnAdd: buttonsGroup.btns[0],
+      btnDel: buttonsGroup.btns[1],
       formOverlay: form.overlay,
       form: form.form,
     };
@@ -265,7 +269,13 @@ const data = [
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp, title);
     const phoneBook = renderPhoneBook(app, title);
-    const {list, logo, btnAdd, formOverlay, form} = phoneBook;
+    const {
+      list,
+      logo,
+      btnAdd,
+      formOverlay,
+      form,
+      btnDel} = phoneBook;
 
     // функционал
     const allRow = renderContacts(list, data);
@@ -275,13 +285,53 @@ const data = [
       formOverlay.classList.add('is-visible');
     });
 
-    form.addEventListener('click', (e) => {
-      e.stopPropagation();
+    formOverlay.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target === formOverlay || target.classList.contains('close')) {
+        formOverlay.classList.remove('is-visible');
+      }
     });
 
-    formOverlay.addEventListener('click', () => {
-      formOverlay.classList.remove('is-visible');
+    btnDel.addEventListener('click', () => {
+      document.querySelectorAll('.delete').forEach(del => {
+        del.classList.toggle('is-visible');
+      });
     });
+
+    list.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target.closest('.del-icon')) {
+        target.closest('.contact').remove();
+      }
+
+      if (target.closest('.contact-name')) {
+        const sortData = data.sort((name1, name2) => {
+          const res = name1.name > name2.name ? 1 : -1;
+          return res;
+        });
+        const sortRows = renderContacts(list, sortData);
+        list.innerHTML = '';
+        list.append(...sortRows);
+      }
+
+      if (target.closest('.contact-surname')) {
+        const sortData = data.sort((name1, name2) => {
+          const res = name1.surname > name2.surname ? 1 : -1;
+          return res;
+        });
+        const sortRows = renderContacts(list, sortData);
+        list.innerHTML = '';
+        list.append(...sortRows);
+      }
+    });
+    setTimeout(() => {
+      const contact = createRow({
+        name: 'Татьяна',
+        surname: 'Якушонок',
+        phone: '001',
+      });
+      list.append(contact);
+    }, 2000);
   };
 
   window.phoneBookInit = init;
