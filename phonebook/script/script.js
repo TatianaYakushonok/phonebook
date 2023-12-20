@@ -164,13 +164,14 @@ const data = [
 
     const tdName = document.createElement('td');
     tdName.textContent = firstName;
-    tdName.classList.add('contact-name');
+    tdName.classList.add('contact-name', 'align-middle');
 
     const tdSurname = document.createElement('td');
     tdSurname.textContent = surname;
-    tdSurname.classList.add('contact-surname');
+    tdSurname.classList.add('contact-surname', 'align-middle');
 
     const tdPhone = document.createElement('td');
+    tdPhone.classList.add('align-middle');
     const phoneLink = document.createElement('a');
     phoneLink.href = `tel:${phone}`;
     phoneLink.textContent = phone;
@@ -180,7 +181,7 @@ const data = [
     const tdBtnEdit = document.createElement('td');
     const buttonEdit = document.createElement('button');
     buttonEdit.type = 'button';
-    buttonEdit.classList.add('btn');
+    buttonEdit.classList.add('btn', 'align-center');
     buttonEdit.insertAdjacentHTML(
         'beforeend',
         `
