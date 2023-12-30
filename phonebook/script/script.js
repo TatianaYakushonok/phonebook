@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 'use strict';
 
-const data = [
+/* const data = [
   {
     name: 'Иван',
     surname: 'Петров',
@@ -22,11 +22,42 @@ const data = [
     surname: 'Попова',
     phone: '+79876543210',
   },
-];
+]; */
 
 {
+  const getStorage = (key) => {
+    const dataPhone = JSON.parse(localStorage.getItem(key) || '[]');
+    return dataPhone;
+  };
+
+  const setStorage = (key, contact) => {
+    const dataPhone = getStorage(key);
+    dataPhone.push(contact);
+    localStorage.setItem(key, JSON.stringify(dataPhone));
+  };
+
+  const sortStorage = (key) => {
+    const dataPhone = getStorage(key);
+    const sortData = dataPhone.sort((name1, name2) => {
+      const res = name1.name > name2.name ? 1 : -1;
+      return res;
+    });
+    localStorage.setItem(key, JSON.stringify(sortData));
+  };
+
+  const removeStorage = (key, phone) => {
+    const dataPhone = getStorage(key);
+    const index = dataPhone.findIndex((item) => item.phone === phone);
+    if (index !== -1) {
+      dataPhone.splice(index, 1);
+    }
+    localStorage.setItem(key, JSON.stringify(dataPhone));
+  };
+
   const addContactData = (contact) => {
-    data.push(contact);
+    setStorage('contact', contact);
+    const dataContact = getStorage('contact');
+    dataContact.push(contact);
   };
 
   // prettier-ignore
@@ -128,7 +159,7 @@ const data = [
         </div>
         <div class="form-group">
           <label class="form-label" for="phone">Телефон:</label>
-          <input class="form-input" type="number" name="phone"
+          <input class="form-input" type="tel" name="phone"
             id="phone" required>
         </div>
     `,
@@ -158,6 +189,7 @@ const data = [
   // prettier-ignore
   const createRow = ({name: firstName, surname, phone}) => {
     const tr = document.createElement('tr');
+    tr.setAttribute('data-phone', phone);
     tr.classList.add('contact');
 
     const tdDel = document.createElement('td');
@@ -210,6 +242,7 @@ const data = [
   };
 
   const renderContacts = (elem, data) => {
+    data = getStorage('contact');
     const allRow = data.map(createRow);
     elem.append(...allRow);
 
@@ -305,24 +338,22 @@ const data = [
       const target = e.target;
       if (target.closest('.del-icon')) {
         target.closest('.contact').remove();
+        const phone = target.closest('.contact').dataset.phone;
+        removeStorage('contact', phone);
       }
 
       if (target.closest('.contact-name')) {
-        const sortData = data.sort((name1, name2) => {
-          const res = name1.name > name2.name ? 1 : -1;
-          return res;
-        });
-        const sortRows = renderContacts(list, sortData);
+        sortStorage('contact');
+        const data = getStorage('contact');
+        const sortRows = renderContacts(list, data);
         list.innerHTML = '';
         list.append(...sortRows);
       }
 
       if (target.closest('.contact-surname')) {
-        const sortData = data.sort((name1, name2) => {
-          const res = name1.surname > name2.surname ? 1 : -1;
-          return res;
-        });
-        const sortRows = renderContacts(list, sortData);
+        sortStorage('contact');
+        const data = getStorage('contact');
+        const sortRows = renderContacts(list, data);
         list.innerHTML = '';
         list.append(...sortRows);
       }
@@ -358,7 +389,10 @@ const data = [
       btnDel} = renderPhoneBook(app, title);
 
     // функционал
-    const allRow = renderContacts(list, data);
+
+    const dataContacts = getStorage('contact');
+
+    const allRow = renderContacts(list, dataContacts);
     const {closeModal} = modalControl(btnAdd, formOverlay);
     hoverRow(allRow, logo);
     deleteControl(btnDel, list);
