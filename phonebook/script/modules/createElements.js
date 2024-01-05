@@ -1,15 +1,14 @@
-'use strict';
 /* eslint-disable max-len */
 
 // prettier-ignore
-const createContainer = () => {
+export const createContainer = () => {
   const container = document.createElement('div');
   container.classList.add('container');
 
   return container;
 };
 
-const createHeader = () => {
+export const createHeader = () => {
   const header = document.createElement('header');
   header.classList.add('header');
   const headerContainer = createContainer();
@@ -19,7 +18,7 @@ const createHeader = () => {
   return header;
 };
 
-const createLogo = (title) => {
+export const createLogo = (title) => {
   const h1 = document.createElement('h1');
   h1.classList.add('logo');
   h1.textContent = `Телефонный справочник ${title}`;
@@ -27,7 +26,7 @@ const createLogo = (title) => {
   return h1;
 };
 
-const createMain = () => {
+export const createMain = () => {
   const main = document.createElement('main');
   main.classList.add('main');
   const mainContainer = createContainer();
@@ -38,7 +37,7 @@ const createMain = () => {
 };
 
 // prettier-ignore
-const createButtonsGoup = (params) => {
+export const createButtonsGoup = (params) => {
   const btnsWrapper = document.createElement('div');
   btnsWrapper.classList.add('btn-wrapper');
   const btns = params.map(({className, type, text}) => {
@@ -55,7 +54,7 @@ const createButtonsGoup = (params) => {
 };
 
 // prettier-ignore
-const createTable = () => {
+export const createTable = () => {
   const table = document.createElement('table');
   table.classList.add('table', 'table-striped');
   const thead = document.createElement('thead');
@@ -78,7 +77,7 @@ const createTable = () => {
 };
 
 // prettier-ignore
-const createForm = () => {
+export const createForm = () => {
   const overlay = document.createElement('div');
   overlay.classList.add('form-overlay');
   const form = document.createElement('form');
@@ -128,7 +127,7 @@ const createForm = () => {
 };
 
 // prettier-ignore
-const createRow = ({name: firstName, surname, phone}) => {
+export const createRow = ({name: firstName, surname, phone}) => {
   const tr = document.createElement('tr');
   tr.setAttribute('data-phone', phone);
   tr.classList.add('contact');
@@ -182,7 +181,7 @@ const createRow = ({name: firstName, surname, phone}) => {
   return tr;
 };
 
-const hoverRow = (allRow, logo) => {
+export const hoverRow = (allRow, logo) => {
   const text = logo.textContent;
   allRow.forEach((contact) => {
     contact.addEventListener('mouseenter', () => {
@@ -194,23 +193,10 @@ const hoverRow = (allRow, logo) => {
   });
 };
 
-const createFooter = (title) => {
+export const createFooter = (title) => {
   const footer = document.createElement('footer');
   footer.classList.add('footer');
   footer.insertAdjacentHTML('beforeend', `Все права защищены &copy;${title}`);
 
   return footer;
-};
-
-module.exports = {
-  createContainer,
-  createHeader,
-  createLogo,
-  createMain,
-  createButtonsGoup,
-  createTable,
-  createForm,
-  createRow,
-  hoverRow,
-  createFooter,
 };

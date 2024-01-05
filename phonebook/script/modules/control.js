@@ -1,15 +1,8 @@
-'use strict';
-
-const {
-  getStorage,
-  sortStorage,
-  removeStorage,
-  addContactData,
-} = require('./serviceStorage.js');
-// prettier-ignore
-const {renderContacts} = require('./render.js');
-// prettier-ignore
-const {createRow} = require('./createElements.js');
+import serviceStorage from './serviceStorage.js';
+const { getStorage, sortStorage, removeStorage, addContactData } =
+  serviceStorage;
+import { renderContacts } from './render.js';
+import { createRow } from './createElements.js';
 
 const modalControl = (btnAdd, formOverlay) => {
   const openModal = () => {
@@ -84,7 +77,7 @@ const formControl = (form, list, closeModal) => {
   });
 };
 
-module.exports = {
+export default {
   modalControl,
   deleteControl,
   addContactPage,

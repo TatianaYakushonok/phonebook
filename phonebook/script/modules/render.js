@@ -1,8 +1,6 @@
-'use strict';
-
-// prettier-ignore
-const {getStorage} = require('./serviceStorage.js');
-const {
+import serviceStorage from './serviceStorage.js';
+const { getStorage } = serviceStorage;
+import {
   createHeader,
   createLogo,
   createMain,
@@ -11,9 +9,9 @@ const {
   createForm,
   createRow,
   createFooter,
-} = require('./createElements.js');
+} from './createElements.js';
 
-const renderContacts = (elem, data) => {
+export const renderContacts = (elem, data) => {
   data = getStorage('contact');
   const allRow = data.map(createRow);
   elem.append(...allRow);
@@ -22,7 +20,7 @@ const renderContacts = (elem, data) => {
 };
 
 // prettier-ignore
-const renderPhoneBook = (selectorApp, title) => {
+export const renderPhoneBook = (selectorApp, title) => {
   const header = createHeader();
   const logo = createLogo(title);
   const main = createMain();
@@ -54,9 +52,4 @@ const renderPhoneBook = (selectorApp, title) => {
     formOverlay: overlay,
     form,
   };
-};
-
-module.exports = {
-  renderContacts,
-  renderPhoneBook,
 };

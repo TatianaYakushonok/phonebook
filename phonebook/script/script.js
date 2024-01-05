@@ -1,16 +1,9 @@
-'use strict';
-
-// prettier-ignore
-const {getStorage} = require('./modules/serviceStorage.js');
-// prettier-ignore
-const {renderContacts, renderPhoneBook} = require('./modules/render.js');
-// prettier-ignore
-const {hoverRow} = require('./modules/createElements.js');
-const {
-  modalControl,
-  deleteControl,
-  formControl,
-} = require('./modules/control.js');
+import serviceStorage from './modules/serviceStorage.js';
+const { getStorage } = serviceStorage;
+import * as render from './modules/render.js';
+import { hoverRow } from './modules/createElements.js';
+import control from './modules/control.js';
+const { modalControl, deleteControl, formControl } = control;
 
 {
   // prettier-ignore
@@ -22,13 +15,13 @@ const {
       btnAdd,
       formOverlay,
       form,
-      btnDel} = renderPhoneBook(app, title);
+      btnDel} = render.renderPhoneBook(app, title);
 
     // функционал
 
     const dataContacts = getStorage('contact');
 
-    const allRow = renderContacts(list, dataContacts);
+    const allRow = render.renderContacts(list, dataContacts);
     const {closeModal} = modalControl(btnAdd, formOverlay);
     hoverRow(allRow, logo);
     deleteControl(btnDel, list);
